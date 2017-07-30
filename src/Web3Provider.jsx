@@ -4,12 +4,12 @@ const isEmpty = require('lodash/isEmpty');
 const AccountUnavailable = require('./AccountUnavailable');
 const Web3Unavailable = require('./Web3Unavailable');
 
-const { web3 } = window;
 const ONE_SECOND = 1000;
 const ONE_MINUTE = ONE_SECOND * 60;
 const propTypes = {
   web3UnavailableScreen: PropTypes.any,
-  accountUnavailableScreen: PropTypes.any
+  accountUnavailableScreen: PropTypes.any,
+  onChangeAccount: PropTypes.func
 };
 const defaultProps = {
   web3UnavailableScreen: Web3Unavailable,
@@ -85,6 +85,7 @@ class Web3Provider extends React.Component {
    * @return {void}
    */
   fetchAccounts() {
+    const { web3 } = window;
     const ethAccounts = this.getAccounts();
 
     if (isEmpty(ethAccounts)) {
@@ -94,6 +95,15 @@ class Web3Provider extends React.Component {
             accountsError: err
           });
         } else {
+          let next = accounts[0];
+          let curr = this.state.accounts[0];
+          next = next && next.toLowerCase();
+          curr = curr && curr.toLowerCase();
+          const didChange = curr && next && (curr !== next);
+
+          if (didChange) {
+            this.props.onChangeAccount(next);
+          }
           this.setState({
             accountsError: null,
             accounts
@@ -101,6 +111,15 @@ class Web3Provider extends React.Component {
         }
       });
     } else {
+      let next = ethAccounts[0];
+      let curr = this.state.accounts[0];
+      next = next && next.toLowerCase();
+      curr = curr && curr.toLowerCase();
+      const didChange = curr && next && (curr !== next);
+
+      if (didChange) {
+        this.props.onChangeAccount(next);
+      }
       this.setState({
         accountsError: null,
         accounts: ethAccounts
@@ -113,6 +132,8 @@ class Web3Provider extends React.Component {
    * @return {void}
    */
   fetchNetwork() {
+    const { web3 } = window;
+
     web3 && web3.version && web3.version.getNetwork((err, netId) => {
       if (err) {
         this.setState({
@@ -134,6 +155,7 @@ class Web3Provider extends React.Component {
    */
   getAccounts() {
     try {
+      const { web3 } = window;
       // throws if no account selected
       const accounts = web3.eth.accounts;
 
@@ -144,6 +166,7 @@ class Web3Provider extends React.Component {
   }
 
   render() {
+    const { web3 } = window;
     const {
       web3UnavailableScreen: Web3UnavailableComponent,
       accountUnavailableScreen: AccountUnavailableComponent

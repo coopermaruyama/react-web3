@@ -15,9 +15,7 @@ Along with the above, `<Web3Provider />` also:
 
  * Reacts to the user unlocking their wallet or switching accounts.
  * Provides a context to your entire app with useful data.
-
-
-
+ * Acceps a callback that is called when user switches to a different account
 
 
 ## Installation
@@ -48,6 +46,9 @@ ReactDOM.render(rootEl,
 `<Web3Provider />` provides a child context to your app with useful data:
 
 ```js
+import React from 'react';
+import PropTypes from 'prop-types';
+
 function SomeComponent(props, context) {
   const web3Context = context.web3;
   //
@@ -64,4 +65,31 @@ function SomeComponent(props, context) {
     </div>
   );
 }
+
+SomComponent.contextTypes = {
+  web3: PropTypes.object
+};
+
+export default SomeComponent;
+```
+
+### Accepted Props
+
+`<Web3Provider />` accepts the following optional props:
+
+  * **`onChangeAccount`:** Callback which is called when the user switches to
+  a new account. Callback will receive the new ETH address as an argument.
+  * **`we3UnavailableScreen`:** React component to override the screen that is
+  shown when web3 is unavailable.
+  * **`accountUnavailableScreen`:** React component to override the screen that
+  is shown when the user's wallet is locked.
+
+```js
+<Web3Provider
+  onChangeAccount={(nextAccount) => {
+    window.location.href = '/logout?nextAccount=' + nextAccount;
+  }}
+  web3UnavailableScreen={SomeComponent}
+  accountUnavailableScreen={SomeComponent}
+/>
 ```
