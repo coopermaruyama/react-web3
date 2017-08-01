@@ -25,10 +25,17 @@ const childContextTypes = {
 };
 
 class Web3Provider extends React.Component {
+
+  static contextTypes = {
+    store: PropTypes.object
+  };
+
   constructor(props, context) {
     super(props, context);
+    const accounts = this.getAccounts();
+
     this.state = {
-      accounts: this.getAccounts(),
+      accounts,
       networkId: null,
       networkError: null
     };
@@ -36,6 +43,10 @@ class Web3Provider extends React.Component {
     this.networkInterval = null;
     this.fetchAccounts = this.fetchAccounts.bind(this);
     this.fetchNetwork = this.fetchNetwork.bind(this);
+
+    if (accounts) {
+      this.handleAccounts(accounts, true);
+    }
   }
 
   getChildContext() {
@@ -95,35 +106,50 @@ class Web3Provider extends React.Component {
             accountsError: err
           });
         } else {
-          let next = accounts[0];
-          let curr = this.state.accounts[0];
-          next = next && next.toLowerCase();
-          curr = curr && curr.toLowerCase();
-          const didChange = curr && next && (curr !== next);
-
-          if (didChange) {
-            this.props.onChangeAccount(next);
-          }
-          this.setState({
-            accountsError: null,
-            accounts
-          })
+          this.handleAccounts(accounts);
         }
       });
     } else {
-      let next = ethAccounts[0];
-      let curr = this.state.accounts[0];
-      next = next && next.toLowerCase();
-      curr = curr && curr.toLowerCase();
-      const didChange = curr && next && (curr !== next);
+      this.handleAccounts(ethAccounts);
+    }
+  }
 
-      if (didChange) {
-        this.props.onChangeAccount(next);
-      }
+  handleAccounts(accounts, isConstructor = false) {
+    const { onChangeAccount } = this.props;
+    const { store } = this.context;
+    let next = accounts[0];
+    let curr = this.state.accounts[0];
+    next = next && next.toLowerCase();
+    curr = curr && curr.toLowerCase();
+    const didChange = curr && next && (curr !== next);
+
+    if (!isConstructor) {
       this.setState({
         accountsError: null,
-        accounts: ethAccounts
-      })
+        accounts
+      });
+    }
+
+    // If provided, execute callback
+    if (didChange && typeof onChangeAccount === 'function') {
+      onChangeAccount(next);
+    }
+
+    // If available, dispatch redux action
+    if (store && typeof store.dispatch === 'function') {
+      const didDefine = !curr && next;
+
+      if (didDefine || (isConstructor && next)) {
+        store.dispatch({
+          type: 'web3/RECEIVE_ACCOUNT',
+          address: next
+        });
+      } else if (didChange) {
+        store.dispatch({
+          type: 'web3/CHANGE_ACCOUNT',
+          address: next
+        })
+      }
     }
   }
 
@@ -161,7 +187,7 @@ class Web3Provider extends React.Component {
 
       return accounts;
     } catch (e) {
-      return null;
+      return [];
     }
   }
 
