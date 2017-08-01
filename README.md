@@ -15,13 +15,13 @@ Along with the above, `<Web3Provider />` also:
 
  * Reacts to the user unlocking their wallet or switching accounts.
  * Provides a context to your entire app with useful data.
- * Acceps a callback that is called when user switches to a different account
+ * Accepts a callback that is called when user switches to a different account.
 
 
 ## Installation
 
 ```
-$ npm install
+$ npm install react-web3
 ```
 
 ## Usage
