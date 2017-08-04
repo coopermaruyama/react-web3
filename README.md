@@ -79,22 +79,36 @@ export default SomeComponent;
 
 `<Web3Provider />` accepts the following optional props:
 
-  * **`onChangeAccount`:** Callback which is called when the user switches to
+  * **`onChangeAccount`** *(Function)*:  Callback which is called when the user switches to
   a new account. Callback will receive the new ETH address as an argument.
-  * **`web3UnavailableScreen`:** React component to override the screen that is
+    * **Example:** `onChangeAccount={nextAddress => console.log(nextAddress)}`
+  * **`web3UnavailableScreen`** *(ReactElement)*: React component to override the screen that is
   shown when web3 is unavailable.
-  * **`accountUnavailableScreen`:** React component to override the screen that
+    * **Example:** `web3UnavailableScreen={<div>You need web3!</div>}`
+  * **`accountUnavailableScreen`** *(ReactElement)*: React component to override the screen that
   is shown when the user's wallet is locked.
-
-```js
-<Web3Provider
-  onChangeAccount={(nextAccount) => {
-    window.location.href = '/logout?nextAccount=' + nextAccount;
-  }}
-  web3UnavailableScreen={SomeComponent}
-  accountUnavailableScreen={SomeComponent}
-/>
-```
+    * **Example:** `web3UnavailableScreen={<div>Please unlock your wallet!</div>}`
+  * **`passive`** *(Boolean)*: If true, your app will be rendered right away
+  even if an ETH address is not available, and the message screens will become
+  irrelevant and never be rendered. This is useful for apps that don't
+  require web3 in order to render the app, but which has optional features that
+  require web3. An example would be if you had an online store that simply
+  allowed ETH as a payment option. In this case, you could read the web3 context
+  and handle it manually in any of your components.
+    * **Example:**
+      ```js
+      const methods = ['Credit Card', 'Check', 'Ether'];
+      const PaymentMethods = (props, context) => (
+        <div>
+          {methods.filter(
+            // filter out the 'Ether' option if no account is available
+            method => method !== 'Ether' || !!context.web3.selectedAccount
+          ).map(
+            method => <PaymentMethod method={method} key={method} />
+          )}
+        </div>
+      )
+      ```
 
 ### Redux Support
 

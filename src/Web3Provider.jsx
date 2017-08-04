@@ -12,6 +12,7 @@ const propTypes = {
   onChangeAccount: PropTypes.func
 };
 const defaultProps = {
+  passive: false,
   web3UnavailableScreen: Web3Unavailable,
   accountUnavailableScreen: AccountUnavailable
 };
@@ -194,9 +195,15 @@ class Web3Provider extends React.Component {
   render() {
     const { web3 } = window;
     const {
+      passive,
       web3UnavailableScreen: Web3UnavailableComponent,
       accountUnavailableScreen: AccountUnavailableComponent
     } = this.props;
+
+    if (passive) {
+      return this.props.children;
+    }
+
     if (!web3) {
       return <Web3UnavailableComponent />;
     }
