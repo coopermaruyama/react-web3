@@ -5,20 +5,10 @@ import sinon from 'sinon';
 import PropTypes from 'prop-types';
 import Web3Provider from '../src/Web3Provider';
 import Component from './helpers/Component';
+import { wait, getWrapper, getMount } from './helpers/utils';
 
 let clock;
 const { window } = global;
-const wait = t => new Promise((resolve, reject) => setTimeout(t, resolve));
-const getWrapper = () => shallow(
-  <Web3Provider>
-    <div id="foo" />
-  </Web3Provider>
-);
-const getMount = () => mount(
-  <Web3Provider>
-    <div id="foo" />
-  </Web3Provider>
-);
 
 describe('Web3Provider', function () {
   before(() => {
