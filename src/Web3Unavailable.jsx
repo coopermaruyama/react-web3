@@ -1,6 +1,6 @@
 const React = require('react');
 const IconNoWeb3 = require('./IconNoWeb3');
-const stylsheet = require('./stylesheet');
+const stylesheet = require('./stylesheet');
 
 function Web3Unavailable(props) {
   return (
