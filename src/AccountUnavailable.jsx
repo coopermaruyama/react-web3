@@ -1,5 +1,5 @@
 const React = require('react');
-const ErrorTemplate = require('./ErrorTemplate')
+const ErrorTemplate = require('./ErrorTemplate');
 
 const AccountUnavailable = ErrorTemplate.bind(null, {
   title: 'No ETH Account Available',
