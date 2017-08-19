@@ -1,5 +1,5 @@
 const React = require('react');
-const ErrorTemplate = require('./ErrorTemplate')
+const ErrorTemplate = require('./ErrorTemplate');
 
 const Web3Unavailable = ErrorTemplate.bind(null, {
   title: 'Web3 Not Found',
