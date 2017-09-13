@@ -84,10 +84,10 @@ export default SomeComponent;
     * **Example:** `onChangeAccount={nextAddress => console.log(nextAddress)}`
   * **`web3UnavailableScreen`** *(ReactElement)*: React component to override the screen that is
   shown when web3 is unavailable.
-    * **Example:** `web3UnavailableScreen={<div>You need web3!</div>}`
+    * **Example:** `web3UnavailableScreen={() => <div>You need web3!</div>}`
   * **`accountUnavailableScreen`** *(ReactElement)*: React component to override the screen that
   is shown when the user's wallet is locked.
-    * **Example:** `web3UnavailableScreen={<div>Please unlock your wallet!</div>}`
+    * **Example:** `accountUnavailableScreen={() => <div>Please unlock your wallet!</div>}`
   * **`passive`** *(Boolean)*: If true, your app will be rendered right away
   even if an ETH address is not available, and the message screens will become
   irrelevant and never be rendered. This is useful for apps that don't
