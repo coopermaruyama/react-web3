@@ -5,7 +5,7 @@ const stylesheet = require('./stylesheet');
 function AccountUnavailable(props) {
   return (
     <div className="Web3Provider-container">
-      <style dangerouslySetInnerHTML={{ __html: stylsheet }}
+      <style dangerouslySetInnerHTML={{ __html: stylesheet }}
       />
       <div className="Web3Provider-wrapper">
         <div className="Web3Provider-image">
