@@ -81,13 +81,13 @@ export default SomeComponent;
 
   * **`onChangeAccount`** *(Function)*:  Callback which is called when the user switches to
   a new account. Callback will receive the new ETH address as an argument.
-    * **Example:** `onChangeAccount={nextAddress => console.log(nextAddress)}`
+    * **Example:** `const onChangeAccount = (nextAddress) => (console.log(nextAddress))`
   * **`web3UnavailableScreen`** *(ReactElement)*: React component to override the screen that is
   shown when web3 is unavailable.
-    * **Example:** `web3UnavailableScreen={() => <div>You need web3!</div>}`
+    * **Example:** `const web3UnavailableScreen = () => (<div>You need web3!</div>)}`
   * **`accountUnavailableScreen`** *(ReactElement)*: React component to override the screen that
   is shown when the user's wallet is locked.
-    * **Example:** `accountUnavailableScreen={() => <div>Please unlock your wallet!</div>}`
+    * **Example:** `const accountUnavailableScreen = () => (<div>Please unlock your wallet!</div>)`
   * **`passive`** *(Boolean)*: If true, your app will be rendered right away
   even if an ETH address is not available, and the message screens will become
   irrelevant and never be rendered. This is useful for apps that don't
