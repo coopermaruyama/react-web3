@@ -167,10 +167,12 @@ class Web3Provider extends React.Component {
           networkError: err
         });
       } else {
-        this.setState({
-          networkError: null,
-          networkId: netId
-        })
+        if (netId != this.state.networkId) {
+          this.setState({
+            networkError: null,
+            networkId: netId
+          })
+        }
       }
     });
   }
