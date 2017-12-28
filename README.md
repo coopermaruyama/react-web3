@@ -24,6 +24,12 @@ Along with the above, `<Web3Provider />` also:
 $ npm install react-web3
 ```
 
+## Test
+
+```
+$ npm test
+```
+
 ## Usage
 
 Wrap your root-level react component:
