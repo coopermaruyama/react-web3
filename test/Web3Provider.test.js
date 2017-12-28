@@ -58,6 +58,22 @@ describe('Web3Provider', function () {
     });
   });
 
+  describe('Polling', function () {
+    it('Does not cause a state update if nothing changes', () => {
+      const spy = sinon.spy(Web3Provider.prototype, 'setState');
+      const wrapper = mount(
+        <Web3Provider>
+          <div id="foo" />
+        </Web3Provider>
+      );
+
+      const initialCallCount = spy.callCount;
+      clock.tick(60000);
+      expect(spy.callCount).to.be.eq(initialCallCount);
+      spy.restore();
+    });
+  });
+
   describe('Redux Integration', function () {
     describe('When accounts becomes available', () => {
       it('dispatches an action', () => {
