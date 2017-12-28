@@ -1,6 +1,7 @@
 const React = require('react');
 const PropTypes = require('prop-types');
 const isEmpty = require('lodash/isEmpty');
+const range = require('lodash/range');
 const AccountUnavailable = require('./AccountUnavailable');
 const Web3Unavailable = require('./Web3Unavailable');
 
@@ -102,6 +103,7 @@ class Web3Provider extends React.Component {
 
     if (isEmpty(ethAccounts)) {
       web3 && web3.eth && web3.eth.getAccounts((err, accounts) => {
+
         if (err) {
           this.setState({
             accountsError: err
@@ -168,20 +170,26 @@ class Web3Provider extends React.Component {
   fetchNetwork() {
     const { web3 } = window;
 
-    web3 && web3.version && web3.version.getNetwork((err, netId) => {
-      if (err) {
-        this.setState({
-          networkError: err
-        });
-      } else {
-        if (netId != this.state.networkId) {
+    if (web3) {
+      const isV1 = /^1/.test(web3.version);
+      const getNetwork = isV1 ? web3.eth.net.getId : web3.version.getNetwork;
+
+      getNetwork((err, netId) => {
+        if (err) {
           this.setState({
-            networkError: null,
-            networkId: netId
-          })
+            networkError: err
+          });
+        } else {
+          if (netId != this.state.networkId) {
+            this.setState({
+              networkError: null,
+              networkId: netId
+            })
+          }
         }
-      }
-    });
+      });
+    }
+
   }
 
   /**
@@ -190,10 +198,14 @@ class Web3Provider extends React.Component {
    * @return {String}
    */
   getAccounts() {
+    const { web3 } = window;
+    const isV1 = /^1/.test(web3.version);
+
     try {
       const { web3 } = window;
       // throws if no account selected
-      const accounts = web3.eth.accounts;
+      const getV1Wallets = () => range(web3.eth.accounts.wallet.length).map(i => web3.eth.accounts.wallet[i]).map(w => w.address);
+      const accounts = isV1 ? getV1Wallets() : web3.eth.accounts;
 
       return accounts;
     } catch (e) {
