@@ -124,6 +124,13 @@ class Web3Provider extends React.Component {
     curr = curr && curr.toLowerCase();
     const didChange = curr && next && (curr !== next);
 
+    if (isEmpty(this.state.accounts) && !isEmpty(accounts)) {
+      this.setState({
+        accountsError: null,
+        accounts: accounts
+      });
+    }
+
     if (didChange && !isConstructor) {
       this.setState({
         accountsError: null,
@@ -167,10 +174,12 @@ class Web3Provider extends React.Component {
           networkError: err
         });
       } else {
-        this.setState({
-          networkError: null,
-          networkId: netId
-        })
+        if (netId != this.state.networkId) {
+          this.setState({
+            networkError: null,
+            networkId: netId
+          })
+        }
       }
     });
   }
