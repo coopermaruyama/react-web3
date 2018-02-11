@@ -81,7 +81,7 @@ function runTests(version) {
               <div id="foo" />
             </Web3Provider>
           );
-
+          clock.tick(1000);
           const initialCallCount = spy.callCount;
           clock.tick(60000);
           expect(spy.callCount).to.be.eq(initialCallCount);
