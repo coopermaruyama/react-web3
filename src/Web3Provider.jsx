@@ -242,6 +242,10 @@ function getNetwork(networkId) {
       return 'MORDEN';
     case '3':
       return 'ROPSTEN';
+    case '4':
+      return 'RINKEBY';
+    case '42':
+      return 'KOVAN';
     default:
       return 'UNKNOWN';
   }
