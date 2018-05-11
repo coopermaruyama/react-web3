@@ -77,7 +77,7 @@ function SomeComponent(props, context) {
   );
 }
 
-SomComponent.contextTypes = {
+SomeComponent.contextTypes = {
   web3: PropTypes.object
 };
 
