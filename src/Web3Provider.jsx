@@ -1,8 +1,9 @@
-const React = require('react');
-const PropTypes = require('prop-types');
-const isEmpty = require('lodash/isEmpty');
-const AccountUnavailable = require('./AccountUnavailable');
-const Web3Unavailable = require('./Web3Unavailable');
+import React from 'react';
+import PropTypes from 'prop-types';
+import isEmpty from 'lodash/isEmpty';
+import AccountUnavailable from './AccountUnavailable';
+import Web3Unavailable from './Web3Unavailable';
+import ErrorTemplate from './ErrorTemplate';
 
 const ONE_SECOND = 1000;
 const ONE_MINUTE = ONE_SECOND * 60;
@@ -214,11 +215,42 @@ class Web3Provider extends React.Component {
     }
 
     if (!web3) {
-      return <Web3UnavailableComponent />;
+      return (
+        <ErrorTemplate 
+          title={
+            this.props.web3unavailableTitle 
+            ? this.props.web3unavailableTitle
+            : 'Web3 Not Found'
+          }
+          message={
+            this.props.web3unavailableMsg
+            ? this.props.web3unavailableMsg
+            : `It seems that you are using a browser without Web3 capabilities. Please
+            make sure that you are using a web3-capable browser like mist or parity.
+            If you are using MetaMask or Parity extension, make sure that it is
+            enabled.`
+          }
+        />
+      )
     }
 
     if (isEmpty(this.state.accounts)) {
-      return <AccountUnavailableComponent />;
+      return (
+        <ErrorTemplate 
+          title={
+            this.props.accontUnavailableTitle 
+            ? this.props.accontUnavailableTitle
+            : 'No ETH Account Available'
+          }
+          message={
+            this.props.accontUnavailableMsg
+            ? this.props.accontUnavailableMsg
+            : `It seems that you don&apos;t have an ETH account selected. If using
+            MetaMask, please make sure that your wallet is unlocked and that
+            you have at least one account in your accounts list.`
+          }
+        />
+      )
     }
 
     return this.props.children;

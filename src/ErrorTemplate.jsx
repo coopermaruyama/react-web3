@@ -1,10 +1,15 @@
-const React = require('react');
-const IconNoWeb3 = require('./IconNoWeb3');
-const stylesheet = require('./stylesheet');
+import React, { Component } from 'react';
+import IconNoWeb3 from './IconNoWeb3';
+import stylesheet from './stylesheet';
 
-function ErrorTemplate(props) {
-  return (
-    <div className="Web3Provider-container">
+class ErrorTemplate extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div className="Web3Provider-container">
       <style dangerouslySetInnerHTML={{ __html: stylesheet }}
       />
       <div className="Web3Provider-wrapper">
@@ -13,15 +18,16 @@ function ErrorTemplate(props) {
         </div>
         <h1
           className="Web3Provider-title"
-          dangerouslySetInnerHTML={{ __html: props.title }}
+          dangerouslySetInnerHTML={{ __html: this.props.title }}
         />
         <p
           className="Web3Provider-message"
-          dangerouslySetInnerHTML={{ __html: props.message }}
+          dangerouslySetInnerHTML={{ __html: this.props.message }}
         />
       </div>
     </div>
-  )
+    )
+  }
 }
 
 module.exports = ErrorTemplate;

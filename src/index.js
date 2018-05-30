@@ -1,5 +1,5 @@
-const Web3Provider = require('./Web3Provider');
-const ErrorTemplate = require('./ErrorTemplate');
+import Web3Provider from './Web3Provider';
+import ErrorTemplate from './ErrorTemplate';
 
 module.exports.Web3Provider = Web3Provider;
 module.exports.ErrorTemplate = ErrorTemplate;
