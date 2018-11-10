@@ -199,7 +199,7 @@ class Web3Provider extends React.Component {
   }
 
   /**
-   * Get the account. We wrap in try/catch because reading `web3.eth.accounrs`
+   * Get the account. We wrap in try/catch because reading `web3.eth.accounts`
    * will throw if no account is selected.
    * @return {String}
    */
