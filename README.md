@@ -125,6 +125,7 @@ will dispatch the following actions to you redux store:
 * **`web3/RECEIVE_ACCOUNT`:** Dispatched the first time an ETH account is
 available.
 * **`web3/CHANGE_ACCOUNT`:** Dispatched when the user switches between accounts.
+* **`web3/LOGOUT`:** Dispatched when user logs out (accounts are no longer available).
 
 Both actions provide the ETH address at `action.address`;
 
@@ -145,6 +146,11 @@ function reducer(state, action) {
         ...state,
         ethAddress: action.address
       };
+    case 'web3/LOGOUT':
+      return {
+        ...state,
+        ethAddress: null
+      }
   }
 }
 ```
