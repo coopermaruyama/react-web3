@@ -141,6 +141,34 @@ function runTests(version) {
             }));
           })
         });
+
+        describe('When logging out', () => {
+          it('dispatches an action', () => {
+            window.web3.setAccounts(['0x111']);
+            const spy = sinon.spy();
+            const wrapper = mount(
+              <Web3Provider>
+                <div id="foo" />
+              </Web3Provider>,
+              {
+                context: {
+                  store: {
+                    dispatch: spy
+                  }
+                }
+              }
+            );
+
+            // simulate logging out
+            window.web3.setAccounts([]);
+            clock.tick(1500);
+
+            sinon.assert.calledWith(spy, sinon.match({
+              type: 'web3/LOGOUT',
+              address: null
+            }));
+          })
+        });
       });
     });
   })

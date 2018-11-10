@@ -147,9 +147,15 @@ class Web3Provider extends React.Component {
 
     // If available, dispatch redux action
     if (store && typeof store.dispatch === 'function') {
-      const didDefine = !curr && next;
+      const didLogin = !curr && next;
+      const didLogout = curr && !next;
 
-      if (didDefine || (isConstructor && next)) {
+      if (didLogout) {
+        store.dispatch({
+          type: 'web3/LOGOUT',
+          address: null
+        })
+      } else if (didLogin || (isConstructor && next)) {
         store.dispatch({
           type: 'web3/RECEIVE_ACCOUNT',
           address: next
