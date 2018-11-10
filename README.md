@@ -123,7 +123,7 @@ export default SomeComponent;
 
 If you're using `react-redux`, then you most likely have a `<Provider />`
 component at the very root of your app. If this is the case, `<Web3Provider />`
-will dispatch the following actions to you redux store:
+will dispatch the following actions to your redux store:
 
 * **`web3/RECEIVE_ACCOUNT`:** Dispatched the first time an ETH account is
 available.
