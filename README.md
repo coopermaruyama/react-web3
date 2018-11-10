@@ -4,6 +4,8 @@
 
 Ensure web3 is available before your app loads.
 
+This package is compatible with both web3@0.2.x and web3@1.x.x
+
 `react-web3` exports a `<Web3Provider />` React component which wraps your app
 and ensures it doesn't render until web3 is available. It also renders a nice
 message to the user to guide them in the following cases:
