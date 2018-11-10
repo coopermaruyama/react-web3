@@ -20,7 +20,7 @@
   "author": "Cooper Maruyama <me@cooperm.com>",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.11"
   },
   "peerDependencies": {
     "react": ">= 15.6.1",
