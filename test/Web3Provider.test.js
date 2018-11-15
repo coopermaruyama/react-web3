@@ -63,6 +63,7 @@ function runTests(version) {
           expect(spy.callCount).to.be.above(1);
           spy.restore();
         });
+
         it('should set context.accounts if available', () => {
           window.web3.setAccounts(['0x987']);
           const wrapper = getMount();
