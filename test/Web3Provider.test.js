@@ -33,7 +33,7 @@ function runTests(version) {
         clock.restore();
       });
       afterEach(() => {
-        web3.restore();
+        window.web3.restore();
       });
 
       describe('Initial Mount', function () {
@@ -64,10 +64,11 @@ function runTests(version) {
           spy.restore();
         });
 
-        it('should set context.accounts if available', () => {
+        it('should set context.accounts if available', async () => {
           window.web3.setAccounts(['0x987']);
           const wrapper = getMount();
           const instance = wrapper.instance();
+          await instance.fetchAccounts()
           const ctx = wrapper.instance().getChildContext()
 
           expect(ctx.web3.selectedAccount).to.equal('0x987');
@@ -92,7 +93,7 @@ function runTests(version) {
 
       describe('Redux Integration', function () {
         describe('When accounts becomes available', () => {
-          it('dispatches an action', () => {
+          it('dispatches an action', async () => {
             window.web3.setAccounts(['0x111']);
             const spy = sinon.spy();
             const wrapper = mount(
@@ -107,6 +108,7 @@ function runTests(version) {
                 }
               }
             );
+            await wrapper.instance().fetchAccounts()
 
             expect(spy.callCount).to.equal(1);
             sinon.assert.calledWith(spy, sinon.match({
@@ -116,7 +118,7 @@ function runTests(version) {
           })
         });
         describe('When switching between accounts', () => {
-          it('dispatches an action', () => {
+          it('dispatches an action', async () => {
             window.web3.setAccounts(['0x111']);
             const spy = sinon.spy();
             const wrapper = mount(
@@ -134,6 +136,7 @@ function runTests(version) {
 
             // simulate changing account
             window.web3.setAccounts(['0x222']);
+            await wrapper.instance().fetchAccounts()
             clock.tick(1500);
 
             sinon.assert.calledWith(spy, sinon.match({
@@ -144,7 +147,7 @@ function runTests(version) {
         });
 
         describe('When logging out', () => {
-          it('dispatches an action', () => {
+          it('dispatches an action', async () => {
             window.web3.setAccounts(['0x111']);
             const spy = sinon.spy();
             const wrapper = mount(
@@ -162,6 +165,7 @@ function runTests(version) {
 
             // simulate logging out
             window.web3.setAccounts([]);
+            await wrapper.instance().fetchAccounts()
             clock.tick(1500);
 
             sinon.assert.calledWith(spy, sinon.match({
