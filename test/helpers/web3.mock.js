@@ -11,6 +11,11 @@ module.exports = {
   version: {
     getNetwork: () => network
   },
+  currentProvider: {
+    enable: () => {
+      return Promise.resolve(accounts)
+    },
+  },
   setNetwork: v => network = v,
   setAccounts: v => accounts = v,
   restore: () => {

@@ -15,6 +15,11 @@ const web3 = {
       getId: cb => cb(null, network)
     }
   },
+  currentProvider: {
+    enable: () => {
+      return Promise.resolve(accounts)
+    },
+  },
   setNetwork: v => network = v,
   setAccounts: v => {
     accounts = v;
