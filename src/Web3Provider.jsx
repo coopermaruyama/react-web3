@@ -38,6 +38,7 @@ class Web3Provider extends React.Component {
 
     this.state = {
       accounts,
+      fetchedAccounts: false,
       networkId: null,
       networkError: null
     };
@@ -112,6 +113,7 @@ class Web3Provider extends React.Component {
     } else {
       this.handleAccounts(ethAccounts);
     }
+
   }
 
   handleAccounts(accounts, isConstructor = false) {
@@ -164,6 +166,7 @@ class Web3Provider extends React.Component {
         })
       }
     }
+    this.setState({fetchedAccounts: true})
   }
 
   /**
@@ -218,6 +221,7 @@ class Web3Provider extends React.Component {
 
   render() {
     const { web3 } = window;
+    const { fetchedAccounts } = this.state;
     const {
       passive,
       web3UnavailableScreen: Web3UnavailableComponent,
@@ -232,7 +236,7 @@ class Web3Provider extends React.Component {
       return <Web3UnavailableComponent />;
     }
 
-    if (isEmpty(this.state.accounts)) {
+    if (isEmpty(this.state.accounts) && fetchedAccounts) {
       return <AccountUnavailableComponent />;
     }
 
