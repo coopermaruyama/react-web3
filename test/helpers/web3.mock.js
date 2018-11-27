@@ -17,7 +17,6 @@ module.exports = {
     },
   },
   setNetwork: v => network = v,
-  setAccounts: v => accounts = v,
   restore: () => {
     accounts = defaultAccounts.slice();
     network = defaultNetwork;

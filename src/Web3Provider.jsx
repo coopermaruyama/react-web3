@@ -98,17 +98,17 @@ class Web3Provider extends React.Component {
    * @return {void}
    */
   fetchAccounts() {
-    const { web3 } = window;
+    const { ethereum } = window;
     const ethAccounts = this.getAccounts();
 
     if (isEmpty(ethAccounts)) {
-      web3 && web3.currentProvider && web3.currentProvider.enable()
-      .then(accounts => this.handleAccounts(accounts))
-      .catch((err) => {
-        this.setState({
-          accountsError: err
+      ethereum && ethereum.enable()
+        .then(accounts => this.handleAccounts(accounts))
+        .catch((err) => {
+          this.setState({
+            accountsError: err
+          });
         });
-      });
     } else {
       this.handleAccounts(ethAccounts);
     }

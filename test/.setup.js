@@ -1,6 +1,7 @@
 require('babel-polyfill');
 const { JSDOM } = require('jsdom');
 const web3 = require('./helpers/web3.mock.js');
+const ethereum = require('./helpers/ethereum.mock.js')
 const web3_v1 = require('./helpers/web3-v1.mock.js');
 
 const jsdom = new JSDOM('<!doctype html><html><body></body></html>');
@@ -13,6 +14,8 @@ function copyProps(src, target) {
   Object.defineProperties(target, props);
 }
 
+window.ethereum = ethereum;
+global.ethereum = ethereum;
 window.web3 = web3;
 global.web3 = web3;
 window.web3_v1 = web3_v1;
