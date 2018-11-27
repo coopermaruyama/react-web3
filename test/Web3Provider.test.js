@@ -21,8 +21,6 @@ function runTests(version) {
 
         if (version === 'v1') {
           window.web3 = window.web3_v1;
-        } else {
-          window.web3 = window.web3;
         }
 
         clock = sinon.useFakeTimers();
