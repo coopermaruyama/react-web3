@@ -10,8 +10,6 @@ import { wait, getWrapper, getMount } from './helpers/utils';
 let clock;
 const { window } = global;
 
-const web3_v0 = window.web3;
-
 /**
  * We wrap all the tests in a function so we can run with web3 < 1.0 and again
  * with web3 >= 1.0
@@ -24,8 +22,7 @@ function runTests(version) {
         if (version === 'v1') {
           window.web3 = window.web3_v1;
         } else {
-          console.log("yo", window.ethereum)
-          window.web3 = web3_v0;
+          window.web3 = window.web3;
         }
 
         clock = sinon.useFakeTimers();
