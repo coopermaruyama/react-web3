@@ -24,9 +24,6 @@ Along with the above, `<Web3Provider />` also:
 
 ```
 $ npm install react-web3
-
-# web3 1.0 support (beta)
-$ npm install react-web3@beta
 ```
 
 ## Test
