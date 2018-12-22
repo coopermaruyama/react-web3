@@ -67,7 +67,6 @@ class Web3Provider extends React.Component {
    * react to the user changing accounts or netowrks.
    */
   componentDidMount() {
-    this.requestLogin();
     this.fetchNetwork();
     this.initPoll();
     this.initNetworkPoll();
