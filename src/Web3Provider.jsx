@@ -22,7 +22,7 @@ const childContextTypes = {
     accounts: PropTypes.array,
     selectedAccount: PropTypes.string,
     network: PropTypes.string,
-    networkId: PropTypes.number
+    networkId: PropTypes.string
   })
 };
 
