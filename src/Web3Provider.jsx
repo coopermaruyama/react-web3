@@ -2,7 +2,7 @@ const React = require('react');
 const PropTypes = require('prop-types');
 const isEmpty = require('lodash/isEmpty');
 const range = require('lodash/range');
-const AccountUnavailable = require('./AccountUnavailable');
+const AccountUnavailable = require('./Login');
 const Web3Unavailable = require('./Web3Unavailable');
 
 const ONE_SECOND = 1000;
@@ -15,7 +15,7 @@ const propTypes = {
 const defaultProps = {
   passive: false,
   web3UnavailableScreen: Web3Unavailable,
-  accountUnavailableScreen: AccountUnavailable
+  accountUnavailableScreen: AccountUnavailable,
 };
 const childContextTypes = {
   web3: PropTypes.shape({
@@ -67,7 +67,6 @@ class Web3Provider extends React.Component {
    * react to the user changing accounts or netowrks.
    */
   componentDidMount() {
-    this.fetchAccounts();
     this.fetchNetwork();
     this.initPoll();
     this.initNetworkPoll();
@@ -94,15 +93,15 @@ class Web3Provider extends React.Component {
   }
 
   /**
-   * Update state regarding the availability of web3 and an ETH account.
+   * Request login from users for EIP 1102 privacy support
    * @return {void}
    */
-  fetchAccounts() {
+  requestLogin() {
     const { web3 } = window;
     const ethAccounts = this.getAccounts();
 
     if (isEmpty(ethAccounts)) {
-      web3 && web3.currentProvider && web3.currentProvider.enable()
+      window.ethereum && ethereum.enable()
       .then(accounts => this.handleAccounts(accounts))
       .catch((err) => {
         this.setState({
@@ -111,6 +110,29 @@ class Web3Provider extends React.Component {
       });
     } else {
       this.handleAccounts(ethAccounts);
+    }
+  }
+
+  /**
+   * Update state regarding the availability of web3 and an ETH account.
+   * @return {void}
+   */
+  fetchAccounts() {
+    const { web3 } = window;
+    const ethAccounts = this.getAccounts();
+
+    if (isEmpty(ethAccounts)) {
+      web3 && web3.currentProvider && web3.currentProvider.sendAsync({
+        "jsonrpc":"2.0","method":"eth_accounts", "params":[]
+      }, (err, response) => {
+        if (err || response.error) {
+          return this.setState({
+            accountsError: err
+          });
+        }
+
+        this.handleAccounts(response.result)
+      })
     }
   }
 
@@ -221,7 +243,7 @@ class Web3Provider extends React.Component {
     const {
       passive,
       web3UnavailableScreen: Web3UnavailableComponent,
-      accountUnavailableScreen: AccountUnavailableComponent
+      accountUnavailableScreen: AccountUnavailableComponent,
     } = this.props;
 
     if (passive) {
@@ -233,7 +255,9 @@ class Web3Provider extends React.Component {
     }
 
     if (isEmpty(this.state.accounts)) {
-      return <AccountUnavailableComponent />;
+      return <AccountUnavailableComponent
+        requestLogin={ this.requestLogin.bind(this) }
+      />;
     }
 
     return this.props.children;
