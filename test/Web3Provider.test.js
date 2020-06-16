@@ -10,8 +10,6 @@ import { wait, getWrapper, getMount } from './helpers/utils';
 let clock;
 const { window } = global;
 
-const web3_v0 = window.web3;
-
 /**
  * We wrap all the tests in a function so we can run with web3 < 1.0 and again
  * with web3 >= 1.0
@@ -23,8 +21,6 @@ function runTests(version) {
 
         if (version === 'v1') {
           window.web3 = window.web3_v1;
-        } else {
-          window.web3 = web3_v0;
         }
 
         clock = sinon.useFakeTimers();
@@ -65,7 +61,7 @@ function runTests(version) {
         });
 
         it('should set context.accounts if available', async () => {
-          window.web3.setAccounts(['0x987']);
+          window.ethereum.setAccounts(['0x987']);
           const wrapper = getMount();
           const instance = wrapper.instance();
           await instance.fetchAccounts()
@@ -94,7 +90,7 @@ function runTests(version) {
       describe('Redux Integration', function () {
         describe('When accounts becomes available', () => {
           it('dispatches an action', async () => {
-            window.web3.setAccounts(['0x111']);
+            window.ethereum.setAccounts(['0x111']);
             const spy = sinon.spy();
             const wrapper = mount(
               <Web3Provider>
@@ -119,7 +115,7 @@ function runTests(version) {
         });
         describe('When switching between accounts', () => {
           it('dispatches an action', async () => {
-            window.web3.setAccounts(['0x111']);
+            window.ethereum.setAccounts(['0x111']);
             const spy = sinon.spy();
             const wrapper = mount(
               <Web3Provider>
@@ -135,7 +131,8 @@ function runTests(version) {
             );
 
             // simulate changing account
-            window.web3.setAccounts(['0x222']);
+            window.ethereum.setAccounts(['0x222']);
+
             await wrapper.instance().fetchAccounts()
             clock.tick(1500);
 
@@ -148,7 +145,8 @@ function runTests(version) {
 
         describe('When logging out', () => {
           it('dispatches an action', async () => {
-            window.web3.setAccounts(['0x111']);
+            window.ethereum.setAccounts(['0x111']);
+
             const spy = sinon.spy();
             const wrapper = mount(
               <Web3Provider>
@@ -164,7 +162,7 @@ function runTests(version) {
             );
 
             // simulate logging out
-            window.web3.setAccounts([]);
+            window.ethereum.setAccounts([]);
             await wrapper.instance().fetchAccounts()
             clock.tick(1500);
 
